@@ -2,9 +2,9 @@
 Green_font_prefix="\033[32m"
 Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
-Info="${Green_font_prefix}[信息]${Font_color_suffix}"
-Error="${Red_font_prefix}[错误]${Font_color_suffix}"
-Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
+Info="${Green_font_prefix}[Info]${Font_color_suffix}"
+Error="${Red_font_prefix}[ERROR]${Font_color_suffix}"
+Tip="${Green_font_prefix}[WARN]${Font_color_suffix}"
 copyright(){
     clear
 echo "\
