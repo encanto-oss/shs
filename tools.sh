@@ -10,17 +10,14 @@ copyright(){
 echo "\
 ############################################################
 
-Linux网络优化脚本 (生产环境慎用)
-
-教程: http://relay.nekoneko.cloud/knowledge/Linux网络优化
-上次更新: 2021-10-27
+Linux Network Optimization
 
 Powered by Neko Neko Cloud
 
 ############################################################
 "
 }
-tcp_tune(){ # 优化TCP窗口
+tcp_tune(){ 
 sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
@@ -63,7 +60,7 @@ EOF
 sysctl -p && sysctl --system
 }
 
-enable_forwarding(){ #开启内核转发
+enable_forwarding(){
 sed -i '/net.ipv4.conf.all.route_localnet/d' /etc/sysctl.conf
 sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
 sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.conf
@@ -86,6 +83,7 @@ net.ipv4.icmp_echo_ignore_broadcasts=1
 EOF
 sysctl -p && sysctl --system
 }
+
 unbanping(){
 sed -i "s/net.ipv4.icmp_echo_ignore_all=1/net.ipv4.icmp_echo_ignore_all=0/g" /etc/sysctl.conf
 sed -i "s/net.ipv4.icmp_echo_ignore_broadcasts=1/net.ipv4.icmp_echo_ignore_broadcasts=0/g" /etc/sysctl.conf
@@ -93,7 +91,6 @@ sysctl -p && sysctl --system
 }
 
 ulimit_tune(){
-
 echo "1000000" > /proc/sys/fs/file-max
 sed -i '/fs.file-max/d' /etc/sysctl.conf
 cat >> '/etc/sysctl.conf' << EOF
@@ -157,15 +154,11 @@ bbr(){
 
 if uname -r|grep -q "^5."
 then
-    echo "已经是 5.x 内核，不需要更新"
+    echo "No need to update, already linux 5"
 else
     wget -N "http://sh.nekoneko.cloud/bbr/bbr.sh" -O bbr.sh && bash bbr.sh
 fi
   
-}
-
-Update_Shell(){
-  wget -N "http://sh.nekoneko.cloud/tools.sh" -O tools.sh && chmod +x tools.sh && ./tools.sh
 }
 
 get_opsy() {
@@ -221,7 +214,7 @@ virt_check() {
       fi
     fi
   else
-    virtual="Dedicated母鸡"
+    virtual="Dedicated Host
   fi
 }
 get_system_info() {
@@ -250,22 +243,19 @@ get_system_info() {
 
 menu() {
   echo -e "\
-${Green_font_prefix}0.${Font_color_suffix} 升级脚本
-${Green_font_prefix}1.${Font_color_suffix} 安装BBR原版内核(已经是5.x的不需要)
-${Green_font_prefix}2.${Font_color_suffix} TCP窗口调优
-${Green_font_prefix}3.${Font_color_suffix} 开启内核转发
-${Green_font_prefix}4.${Font_color_suffix} 系统资源限制调优
-${Green_font_prefix}5.${Font_color_suffix} 屏蔽ICMP ${Green_font_prefix}6.${Font_color_suffix} 开放ICMP
+${Green_font_prefix}1.${Font_color_suffix} Update to linux5
+${Green_font_prefix}2.${Font_color_suffix} TCP Window Optimization
+${Green_font_prefix}3.${Font_color_suffix} enable ip forward
+${Green_font_prefix}4.${Font_color_suffix} increase ulimit
+${Green_font_prefix}5.${Font_color_suffix} ban icmp
+${Green_font_prefix}6.${Font_color_suffix} open icmp
 "
 get_system_info
-echo -e "当前系统信息: ${Font_color_suffix}$opsy ${Green_font_prefix}$virtual${Font_color_suffix} $arch ${Green_font_prefix}$kern${Font_color_suffix}
+echo -e "Status: ${Font_color_suffix}$opsy ${Green_font_prefix}$virtual${Font_color_suffix} $arch ${Green_font_prefix}$kern${Font_color_suffix}
 "
 
-  read -p "请输入数字 :" num
+  read -p "number :" num
   case "$num" in
-  0)
-    Update_Shell
-    ;;
   1)
     bbr
     ;;
@@ -286,7 +276,7 @@ echo -e "当前系统信息: ${Font_color_suffix}$opsy ${Green_font_prefix}$virt
     ;;
   *)
   clear
-    echo -e "${Error}:请输入正确数字 [0-99]"
+    echo -e "${Error}:Please input [0-99]"
     sleep 5s
     start_menu
     ;;
