@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Powered by Neko Neko Cloud
 Green_font_prefix="\033[32m"
 Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
@@ -12,12 +13,10 @@ echo "\
 
 Linux Network Optimization
 
-Powered by Neko Neko Cloud
-
 ############################################################
 "
 }
-tcp_tune(){ 
+tcp_tune(){
 sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
@@ -158,7 +157,7 @@ then
 else
     wget -N "http://sh.nekoneko.cloud/bbr/bbr.sh" -O bbr.sh && bash bbr.sh
 fi
-  
+
 }
 
 get_opsy() {
@@ -214,7 +213,7 @@ virt_check() {
       fi
     fi
   else
-    virtual="Dedicated Host
+    virtual="Dedicated Host"
   fi
 }
 get_system_info() {
